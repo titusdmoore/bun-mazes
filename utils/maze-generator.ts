@@ -53,3 +53,54 @@ function generatePoint(width: number, height: number, usedPoint: Point | undefin
 
     return { x, y };
 }
+
+function createPath(maze: string[], start: Point, end: Point, visited: boolean[][], walls: Point[]): void {
+    
+}
+
+// Work in progress maze generator code
+function buildMaze(width, height) {
+	let maze = new Array(height);
+  
+  for ( let i = 0; i < maze.length; i++ ) {
+  	let tmp = new Array(width);
+    
+    if ( i == 0 || i == height - 1) {
+    	tmp.fill('#');
+      maze[i] = tmp.join('');
+      continue;
+    }
+    
+    tmp.fill(' ');
+    tmp[0] = "#";
+    tmp[width - 1] = "#";
+    
+    maze[i] = tmp.join('');
+  }
+  
+ 	return maze;
+}
+
+function splitCompartment(startVertex, endVertex, maze) {
+	let vertSplit = randomNumber(startVertex.x + 1, endVertex.x - 1);
+  let horizontalSplit = randomNumber(startVertex.y + 1, endVertex.y - 1);
+}
+
+function randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function insertChar(maze, row, col, newChar) {
+  let tmp = maze[row]
+  tmp = tmp.split('')
+  tmp.splice(col, 1, newChar)
+  maze[row] = tmp.join('')
+}
+
+
+let mazeArr = buildMaze(10, 10);
+
+insertChar(mazeArr, 4, 3, "D")
+console.log(mazeArr)
+console.log(`\n${mazeArr.join("\n")}\n`)
+console.log(randNum(2))
