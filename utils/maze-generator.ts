@@ -54,36 +54,59 @@ function generatePoint(width: number, height: number, usedPoint: Point | undefin
     return { x, y };
 }
 
-function createPath(maze: string[], start: Point, end: Point, visited: boolean[][], walls: Point[]): void {
-    
-}
 
-// Work in progress maze generator code
-function buildMaze(width, height) {
-	let maze = new Array(height);
+
+
+
+export function buildMaze(width: number, height: number): String[] {
+    let maze: String[] = new Array(height);
   
-  for ( let i = 0; i < maze.length; i++ ) {
-  	let tmp = new Array(width);
-    
-    if ( i == 0 || i == height - 1) {
-    	tmp.fill('#');
-      maze[i] = tmp.join('');
-      continue;
+    for ( let i = 0; i < maze.length; i++ ) {
+        let tmp = new Array(width);
+        
+        if ( i == 0 || i == height - 1) {
+            tmp.fill('#');
+          maze[i] = tmp.join('');
+          continue;
+        }
+        
+        tmp.fill(' ');
+        tmp[0] = "#";
+        tmp[width - 1] = "#";
+        
+        maze[i] = tmp.join('');
     }
-    
-    tmp.fill(' ');
-    tmp[0] = "#";
-    tmp[width - 1] = "#";
-    
-    maze[i] = tmp.join('');
-  }
+
+    splitCompartment({x: 1, y: 1}, { x: maze[0].length - 1, y: maze.length - 1 }, maze);
   
  	return maze;
 }
 
-function splitCompartment(startVertex, endVertex, maze) {
-	let vertSplit = randomNumber(startVertex.x + 1, endVertex.x - 1);
-  let horizontalSplit = randomNumber(startVertex.y + 1, endVertex.y - 1);
+function splitCompartment(startVertex: Point, endVertex: Point, maze: String[]) {
+	if ( endVertex.x - startVertex.x <= 2 && endVertex.y - startVertex.y <= 2 ) {
+  	return;
+  }
+  
+  let vertSplit, horizontalSplit;
+
+	if (  endVertex.y - startVertex.y > 2 ) {
+    vertSplit = randomNumber(startVertex.x + 1, endVertex.x - 1);
+	  console.log("Ran in vert", startVertex, endVertex)
+    for ( let i = startVertex.y; i < endVertex.y; i++ ) {
+      insertChar(maze, i, vertSplit, "#");
+    }
+  }
+  
+  if (  endVertex.x - startVertex.x > 2 ) {
+  	let horizontalSplit = randomNumber(startVertex.y + 1, endVertex.y - 1);
+  	console.log("Maze", `\n${mazeArr.join("\n")}\n`)
+    for ( let i = startVertex.x; i < endVertex.x; i++ ) {
+      insertChar(maze, horizontalSplit, i, "#");
+    }
+  }
+
+  
+  // splitCompartment(startVertex, { x: vertSplit, y: horizontalSplit}, maze);
 }
 
 function randomNumber(min, max) {
@@ -98,9 +121,5 @@ function insertChar(maze, row, col, newChar) {
 }
 
 
-let mazeArr = buildMaze(10, 10);
+let mazeArr = buildMaze(4, 10);
 
-insertChar(mazeArr, 4, 3, "D")
-console.log(mazeArr)
-console.log(`\n${mazeArr.join("\n")}\n`)
-console.log(randNum(2))
