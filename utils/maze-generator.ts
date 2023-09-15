@@ -77,36 +77,38 @@ export function buildMaze(width: number, height: number): String[] {
         maze[i] = tmp.join('');
     }
 
-    splitCompartment({x: 1, y: 1}, { x: maze[0].length - 1, y: maze.length - 1 }, maze);
+   splitCompartment({x: 0, y: 0}, { x: maze[0].length - 1, y: maze.length - 1 }, maze);
   
  	return maze;
 }
 
 function splitCompartment(startVertex: Point, endVertex: Point, maze: String[]) {
-    if ( endVertex.x - startVertex.x <= 2 && endVertex.y - startVertex.y <= 2 ) {
+    if ( endVertex.x - startVertex.x == 1 && endVertex.y - startVertex.y == 1 ) {
         return;
     }
-  
-    let vertSplit, horizontalSplit;
 
-	if (  endVertex.y - startVertex.y > 2 ) {
-    vertSplit = randomNumber(startVertex.x + 1, endVertex.x - 1);
-	  console.log("Ran in vert", startVertex, endVertex)
-    for ( let i = startVertex.y; i < endVertex.y; i++ ) {
-      insertChar(maze, i, vertSplit, "#");
-    }
-  }
-  
-  if (  endVertex.x - startVertex.x > 2 ) {
-  	let horizontalSplit = randomNumber(startVertex.y + 1, endVertex.y - 1);
-  	console.log("Maze", `\n${mazeArr.join("\n")}\n`)
-    for ( let i = startVertex.x; i < endVertex.x; i++ ) {
-      insertChar(maze, horizontalSplit, i, "#");
-    }
-  }
+    let vertSplit; 
+    let horizontalSplit;
 
-  
-  splitCompartment(startVertex, { x: vertSplit - 1, y: horizontalSplit - 1}, maze);
+    if (  endVertex.y - startVertex.y > 2 ) {
+        vertSplit = randomNumber(startVertex.x + 1, endVertex.x - 1);
+        console.log("Ran in vert", startVertex, endVertex)
+        for ( let i = startVertex.y; i < endVertex.y; i++ ) {
+            insertChar(maze, i, vertSplit, "#");
+        }
+    }
+
+    if (  endVertex.x - startVertex.x > 2 ) {
+        horizontalSplit = randomNumber(startVertex.y + 1, endVertex.y - 1);
+
+        for ( let i = startVertex.x; i < endVertex.x; i++ ) {
+            insertChar(maze, horizontalSplit, i, "#");
+        }
+    }
+
+    // splitCompartment({x: startVertex.x, y: startVertex}, { x: vertSplit, y: horizontalSplit }, maze);
+    // Used for testing
+    return [vertSplit, horizontalSplit];
 }
 
 function randomNumber(min, max) {
@@ -114,12 +116,18 @@ function randomNumber(min, max) {
 }
 
 function insertChar(maze, row, col, newChar) {
-  let tmp = maze[row]
-  tmp = tmp.split('')
-  tmp.splice(col, 1, newChar)
-  maze[row] = tmp.join('')
+    let tmp = maze[row]
+    tmp = tmp.split('')
+    tmp.splice(col, 1, newChar)
+    maze[row] = tmp.join('')
 }
 
+export function testing() {
+    let maze = buildMaze(10, 10);
 
-let mazeArr = buildMaze(4, 10);
+    let splits = splitCompartment({x: 0, y: 0}, { x: maze[0].length - 1, y: maze.length - 1 }, maze);
+    splitCompartment({x: 0, y: 0}, { x: splits[0], y: splits[1] }, maze);
+    console.log( splits )
 
+    console.log(maze.join("\n"))
+}
