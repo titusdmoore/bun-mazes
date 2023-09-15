@@ -83,11 +83,11 @@ export function buildMaze(width: number, height: number): String[] {
 }
 
 function splitCompartment(startVertex: Point, endVertex: Point, maze: String[]) {
-	if ( endVertex.x - startVertex.x <= 2 && endVertex.y - startVertex.y <= 2 ) {
-  	return;
-  }
+    if ( endVertex.x - startVertex.x <= 2 && endVertex.y - startVertex.y <= 2 ) {
+        return;
+    }
   
-  let vertSplit, horizontalSplit;
+    let vertSplit, horizontalSplit;
 
 	if (  endVertex.y - startVertex.y > 2 ) {
     vertSplit = randomNumber(startVertex.x + 1, endVertex.x - 1);
@@ -106,7 +106,7 @@ function splitCompartment(startVertex: Point, endVertex: Point, maze: String[]) 
   }
 
   
-  // splitCompartment(startVertex, { x: vertSplit, y: horizontalSplit}, maze);
+  splitCompartment(startVertex, { x: vertSplit - 1, y: horizontalSplit - 1}, maze);
 }
 
 function randomNumber(min, max) {
